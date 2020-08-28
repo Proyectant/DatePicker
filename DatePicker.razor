@@ -1,0 +1,61 @@
+﻿@page "/proizvoljni"
+@using BlazorDateRangePicker
+
+<h3>Izvestaj za proizvoljni period</h3>
+<div class="col-12">
+    <DateRangePicker OnRangeSelect="OnRangeSelect" Culture="@(System.Globalization.CultureInfo.GetCultureInfo("sr-Latn"))">
+        <PickerTemplate>
+            <div id="@context.ParentId" @onclick="context.Toggle" style="background: #fff; cursor: pointer; padding: 5px 10px; width: 250px; border: 1px solid #ccc;">
+                <i class="oi oi-calendar"></i>&nbsp;
+                <span>@context.FormattedRange @(string.IsNullOrEmpty(context.FormattedRange) ? "Izaberi period" : "")</span>
+                <i class="oi oi-chevron-bottom float-right"></i>
+            </div>
+        </PickerTemplate>
+        <ButtonsTemplate>
+            <button class="cancelBtn btn btn-sm btn-default"
+                    @onclick="@context.ClickCancel" type="button">
+                Otkazi
+            </button>
+
+            <button class="applyBtn btn btn-sm btn-primary" @onclick="@context.ClickApply"
+                    disabled="@(context.StartDate == null || context.EndDate == null)"
+                    type="button">
+                Potvrdi
+            </button>
+        </ButtonsTemplate>
+    </DateRangePicker>
+
+    <label> izabrali ste period od  @pocetakdan . @pocetakmesec . @pocetakgodina  do @krajdan .@krajmesec . @krajgodina</label>
+
+</div>
+
+
+
+
+@code {
+    DateTimeOffset Pocetak;
+    DateTimeOffset Kraj;
+    string pocetakdan;
+    string pocetakmesec;
+    string pocetakgodina;
+
+    string krajdan;
+    string krajmesec;
+    string krajgodina;
+
+    public void OnRangeSelect(DateRange range)
+    {
+
+        Pocetak = range.Start;
+        Kraj = range.End;
+        pocetakdan = range.Start.Day.ToString();
+        pocetakmesec = range.Start.Month.ToString();
+        pocetakgodina = range.Start.Year.ToString();
+
+        krajdan = range.End.Day.ToString();
+        krajmesec = range.End.Month.ToString();
+        krajgodina = range.End.Year.ToString();
+    }
+
+
+}
